@@ -4,15 +4,15 @@ import 'package:whatsapp_ui/features/auth/repository/auth_repositorys.dart';
 
 final authControllerProvider = Provider((ref) {
   final authRository = ref.watch(authRepositoryProvider);
-  return AuthControllerler: authRository);
+  return AuthController(authRepository: authRository);
 });
 
 class AuthController {
-  final AuthRepository authController;
+  final AuthRepository authRepository;
 
-  AuthController({required this.authController});
+  AuthController({required this.authRepository});
 
   void signInWithPhone(BuildContext context, String phoneNumber) {
-    authController.signInWithPhone(context, phoneNumber);
+    authRepository.signInWithPhone(context, phoneNumber);
   }
 }
