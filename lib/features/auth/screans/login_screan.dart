@@ -1,17 +1,20 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_ui/colors.dart';
+import 'package:whatsapp_ui/features/auth/controller/auth_controller.dart';
+import 'package:whatsapp_ui/utils/custome_snackbar.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   static const routeName = "/login-screan";
 
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final phoneControer = TextEditingController();
   Country? country;
 
@@ -22,6 +25,17 @@ class _LoginPageState extends State<LoginPage> {
           setState(() {});
           country = _country;
         });
+  }
+
+  void sendPhoneNumber(){
+    String PhoneNumber = phoneControer.text.trim();
+    if (country!= null && PhoneNumber.isNotEmpty) {
+      //Adding Country Code
+      final phoneNumber = "+${country!.phoneCode}$PhoneNumber";
+      ref.read(authControllerProvider).signInWithPhone(context, phoneNumber);
+    }else{
+      showSnackBar(context: context, content: "Enter the fields");
+    }
   }
 
   @override
@@ -37,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: backgroundColor,
-        title: Text("Enter your phone number"),
+        title: const Text("Enter your phone number"),
         centerTitle: true,
       ),
       body: Column(
@@ -46,9 +60,9 @@ class _LoginPageState extends State<LoginPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
                   child: const Text(
                     "Whatsapp will need to verify your phone number.",
                     style: TextStyle(fontSize: 18),
@@ -80,12 +94,13 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 20),
+            margin: const EdgeInsets.only(bottom: 20),
             child: ElevatedButton(
-              onPressed: () {},
-              child: Text("NEXT"),
+              onPressed: sendPhoneNumber,
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.green)),
+                backgroundColor: MaterialStateProperty.all(Colors.green),
+              ),
+              child: const Text("NEXT"),
             ),
           )
         ],
