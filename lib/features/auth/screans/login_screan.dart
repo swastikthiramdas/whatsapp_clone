@@ -88,15 +88,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       child: TextField(
                         controller: phoneControer,
                         decoration: InputDecoration(hintText: "phone number"),
-                      ))
+                      ),)
                 ],
               )
             ],
           ),
           Container(
+            width: size.width/9*2,
             margin: const EdgeInsets.only(bottom: 20),
             child: ElevatedButton(
-              onPressed: sendPhoneNumber,
+              onPressed: () => sendPhoneNumber(),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.green),
               ),

@@ -12,6 +12,7 @@ class AuthController {
 
   AuthController({required this.authRepository});
 
+
   void signInWithPhone(BuildContext context, String phoneNumber) {
     authRepository.signInWithPhone(context, phoneNumber);
   }

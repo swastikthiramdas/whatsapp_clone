@@ -29,6 +29,7 @@ class LandingPage extends StatelessWidget {
             Image.asset("assets/bg.png",
                 height: 340, width: 340, color: tabColor),
             SizedBox(height: size.height / 9),
+            // SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10),
               child: const Text(
@@ -38,7 +39,7 @@ class LandingPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: size.width/9 , left: size.width/9 , top: 20),
+              padding: EdgeInsets.only(right: size.width/9 , left: size.width/9 , top: size.height/10 ),
               child: ElevatedButton(
                 onPressed: () => NavigatToLoginScreen(context),
                 child: Center(child: Text("AGREE AND CONTIUE")),
