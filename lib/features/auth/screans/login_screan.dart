@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_ui/colors.dart';
 import 'package:whatsapp_ui/features/auth/controller/auth_controller.dart';
-import 'package:whatsapp_ui/utils/custome_snackbar.dart';
+import 'package:whatsapp_ui/common/utils/utils.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   static const routeName = "/login-screan";

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:whatsapp_ui/features/auth/screans/user_information_screan.dart';
 
 import 'common/error.dart';
 import 'features/auth/screans/login_screan.dart';
@@ -15,6 +16,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           builder: (context) => OTPScreen(
                 verificationId: verificationId,
               ));
+    case UserInformationScreen.routeName:
+      return MaterialPageRoute(
+          builder: (context) => const UserInformationScreen());
     default:
       return MaterialPageRoute(
         builder: (context) => const Scaffold(

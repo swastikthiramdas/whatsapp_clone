@@ -9,9 +9,13 @@ import 'colors.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options : DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(ProviderScope(child:  MyApp(),),);
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -23,13 +27,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Whatsapp UI',
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: backgroundColor,
-        appBarTheme: const AppBarTheme(
-          color: appBarColor
-        )
-      ),
+          scaffoldBackgroundColor: backgroundColor,
+          appBarTheme: const AppBarTheme(color: appBarColor)),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: LandingPage(),
+      home: const LandingPage(),
     );
   }
 }
