@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp_ui/features/auth/screans/user_information_screan.dart';
+import 'package:whatsapp_ui/features/select_contacts/screens/select_contact_screen.dart';
 
 import 'common/error.dart';
 import 'features/auth/screans/login_screan.dart';
 import 'features/auth/screans/otpscreen.dart';
+
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -19,6 +20,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case UserInformationScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => const UserInformationScreen());
+    case SelectContactScreen.routeName:
+      return MaterialPageRoute(
+          builder: (context) => const SelectContactScreen());
     default:
       return MaterialPageRoute(
         builder: (context) => const Scaffold(

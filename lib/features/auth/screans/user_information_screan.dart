@@ -37,6 +37,8 @@ class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
 
     if(name.isNotEmpty){
       ref.read(authControllerProvider).saveUserdataToFirebase(context, name, image);
+    } else{
+      showSnackBar(context: context, content: "Enter Your Name");
     }
   }
 

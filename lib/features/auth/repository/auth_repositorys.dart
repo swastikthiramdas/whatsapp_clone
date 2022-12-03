@@ -8,7 +8,7 @@ import 'package:whatsapp_ui/common/repositories/commom_firebase_storage.dart';
 import 'package:whatsapp_ui/features/auth/screans/user_information_screan.dart';
 import 'package:whatsapp_ui/common/utils/utils.dart';
 import 'package:whatsapp_ui/model/user_model.dart';
-import 'package:whatsapp_ui/screens/mobile_chat_screen.dart';
+import 'package:whatsapp_ui/screens/mobile_layout_screen.dart';
 
 import '../screans/otpscreen.dart';
 
@@ -20,6 +20,17 @@ class AuthRepository {
   final FirebaseFirestore firestore;
 
   AuthRepository({required this.auth, required this.firestore});
+
+  Future<UserModel?> getCurrentUserData() async{
+    var user = await firestore.collection("user").doc(auth.currentUser?.uid).get();
+    UserModel? userData;
+    if(user.data() != null){
+      userData = UserModel.fromMap(user.data()!);
+    }
+
+    return userData;
+}
+
 
   void signInWithPhone(BuildContext context, String phoneNumber) async {
     try {
@@ -88,7 +99,7 @@ class AuthRepository {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => const MobileChatScreen(),
+            builder: (context) => const MobileLayoutScreen(),
           ),
           (route) => false);
     } catch (e) {
