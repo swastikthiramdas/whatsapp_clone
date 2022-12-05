@@ -21,16 +21,16 @@ class AuthRepository {
 
   AuthRepository({required this.auth, required this.firestore});
 
-  Future<UserModel?> getCurrentUserData() async{
-    var user = await firestore.collection("user").doc(auth.currentUser?.uid).get();
+  Future<UserModel?> getCurrentUserData() async {
+    var user =
+        await firestore.collection("user").doc(auth.currentUser?.uid).get();
     UserModel? userData;
-    if(user.data() != null){
+    if (user.data() != null) {
       userData = UserModel.fromMap(user.data()!);
     }
 
     return userData;
-}
-
+  }
 
   void signInWithPhone(BuildContext context, String phoneNumber) async {
     try {
@@ -90,7 +90,7 @@ class AuthRepository {
       var user = UserModel(
           name: name,
           uid: uid,
-          phoneNumber: auth.currentUser!.uid,
+          phoneNumber: auth.currentUser!.phoneNumber!,
           profilePic: photoUrl,
           isOnline: true,
           groupId: []);
@@ -105,5 +105,13 @@ class AuthRepository {
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }
+  }
+
+  Stream<UserModel> userData(String userId) {
+    return firestore.collection("user").doc(userId).snapshots().map(
+          (event) => UserModel.fromMap(
+            event.data()!,
+          ),
+        );
   }
 }

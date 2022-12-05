@@ -1,21 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_ui/colors.dart';
+import 'package:whatsapp_ui/common/utils/loader.dart';
+import 'package:whatsapp_ui/features/auth/controller/auth_controller.dart';
+import 'package:whatsapp_ui/model/user_model.dart';
 
 import 'package:whatsapp_ui/widgets/chat_list.dart';
 
-import '../info.dart';
+class MobileChatScreen extends ConsumerWidget {
+  static const String routeName = "/mobile-chat-screen";
+  final String name;
+  final String uid;
 
-class MobileChatScreen extends StatelessWidget {
-  const MobileChatScreen({Key? key}) : super(key: key);
+  const MobileChatScreen({Key? key, required this.name, required this.uid})
+      : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarColor,
-        title: Text(
-          info[0]['name'].toString(),
-        ),
+        title: StreamBuilder<UserModel>(
+            stream: ref.read(authControllerProvider).userDataById(uid),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const LoaderScreen();
+              }
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                  ),
+                  Text(
+                    snapshot.data!.isOnline ? "online" : "offline",
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.normal
+                    ),
+                  )
+                ],
+              );
+            }),
         centerTitle: false,
         actions: [
           IconButton(
@@ -79,6 +107,7 @@ class MobileChatScreen extends StatelessWidget {
               contentPadding: const EdgeInsets.all(10),
             ),
           ),
+          SizedBox(height: size.height / 60)
         ],
       ),
     );
