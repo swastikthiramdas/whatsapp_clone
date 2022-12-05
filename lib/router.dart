@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_ui/features/auth/screans/user_information_screan.dart';
 import 'package:whatsapp_ui/features/select_contacts/screens/select_contact_screen.dart';
-import 'package:whatsapp_ui/screens/mobile_chat_screen.dart';
+import 'package:whatsapp_ui/features/chat/screens/mobile_chat_screen.dart';
 
 import 'common/error.dart';
 import 'features/auth/screans/login_screan.dart';
