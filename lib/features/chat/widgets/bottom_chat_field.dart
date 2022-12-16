@@ -1,16 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_ui/colors.dart';
-import 'package:whatsapp_ui/common/utils/utils.dart';
 
-class BottomChatField extends StatefulWidget {
-  const BottomChatField({Key? key}) : super(key: key);
+import '../controller/chat_controller.dart';
+
+class BottomChatField extends ConsumerStatefulWidget {
+  final String recieverUserId;
+
+  const BottomChatField(this.recieverUserId, {Key? key}) : super(key: key);
 
   @override
-  State<BottomChatField> createState() => _BottomChatFieldState();
+  ConsumerState<BottomChatField> createState() => _BottomChatFieldState();
 }
 
-class _BottomChatFieldState extends State<BottomChatField> {
+class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   bool isShowAndHideButtons = false;
+  final TextEditingController _messageController = TextEditingController();
+
+
+
+  void sendTextMessage() {
+    if (isShowAndHideButtons) {
+      ref.read(chatControllerProvider).sendTextMessage(
+            context,
+            _messageController.text.trim(),
+            widget.recieverUserId,
+          );
+
+      setState(() {
+        _messageController.text = "";
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _messageController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +47,7 @@ class _BottomChatFieldState extends State<BottomChatField> {
       children: [
         Expanded(
           child: TextFormField(
+            controller: _messageController,
             onChanged: (val) {
               if (val.isNotEmpty) {
                 setState(() {
@@ -35,7 +64,7 @@ class _BottomChatFieldState extends State<BottomChatField> {
               filled: true,
               fillColor: mobileChatBoxColor,
               prefixIcon: SizedBox(
-                width: isShowAndHideButtons ? 50 :100,
+                width: isShowAndHideButtons ? 50 : 100,
                 child: Row(
                   children: [
                     IconButton(
@@ -55,7 +84,7 @@ class _BottomChatFieldState extends State<BottomChatField> {
                 ),
               ),
               suffixIcon: SizedBox(
-                width: isShowAndHideButtons ? 50 :100,
+                width: isShowAndHideButtons ? 50 : 100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -98,9 +127,12 @@ class _BottomChatFieldState extends State<BottomChatField> {
           child: CircleAvatar(
             radius: 25,
             backgroundColor: Color(0xFF128C7E),
-            child: Icon(
-              isShowAndHideButtons ? Icons.send : Icons.mic,
-              color: Colors.white,
+            child: GestureDetector(
+              child: Icon(
+                isShowAndHideButtons ? Icons.send : Icons.mic,
+                color: Colors.white,
+              ),
+              onTap: sendTextMessage,
             ),
           ),
         )

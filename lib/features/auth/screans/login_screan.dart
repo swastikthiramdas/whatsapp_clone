@@ -27,13 +27,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         });
   }
 
-  void sendPhoneNumber(){
+  void sendPhoneNumber() {
     String PhoneNumber = phoneControer.text.trim();
-    if (country!= null && PhoneNumber.isNotEmpty) {
+    if (country != null && PhoneNumber.isNotEmpty) {
       //Adding Country Code
       final phoneNumber = "+${country!.phoneCode}$PhoneNumber";
       ref.read(authControllerProvider).signInWithPhone(context, phoneNumber);
-    }else{
+    } else {
       showSnackBar(context: context, content: "Enter the fields");
     }
   }
@@ -46,7 +46,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -84,17 +86,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         style: TextStyle(fontSize: 20)),
                   const SizedBox(width: 10),
                   SizedBox(
-                      width: size.width * 0.7,
-                      child: TextField(
-                        controller: phoneControer,
-                        decoration: InputDecoration(hintText: "phone number"),
-                      ),)
+                    width: size.width * 0.7,
+                    child: TextField(
+                      controller: phoneControer,
+                      decoration: InputDecoration(hintText: "phone number"),
+                    ),)
                 ],
               )
             ],
           ),
           Container(
-            width: size.width/9*2,
+            width: size.width / 9 * 2,
             margin: const EdgeInsets.only(bottom: 20),
             child: ElevatedButton(
               onPressed: () => sendPhoneNumber(),
