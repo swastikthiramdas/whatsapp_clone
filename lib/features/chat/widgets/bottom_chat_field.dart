@@ -17,15 +17,15 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   bool isShowAndHideButtons = false;
   final TextEditingController _messageController = TextEditingController();
 
-
-
   void sendTextMessage() {
     if (isShowAndHideButtons) {
-      ref.read(chatControllerProvider).sendTextMessage(
-            context,
-            _messageController.text.trim(),
-            widget.recieverUserId,
-          );
+      if (_messageController.text.trim().isNotEmpty) {
+        ref.read(chatControllerProvider).sendTextMessage(
+              context,
+              _messageController.text.trim(),
+              widget.recieverUserId,
+            );
+      }
 
       setState(() {
         _messageController.text = "";
@@ -35,7 +35,6 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _messageController.dispose();
   }

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:whatsapp_ui/common/enums/message_enum.dart';
@@ -22,6 +22,7 @@ class ChatRepository {
 
   ChatRepository({required this.firestore, required this.auth});
 
+  //No Problem
   Stream<List<ChatContact>> getChatContacts() {
     return firestore
         .collection('user')
@@ -30,12 +31,13 @@ class ChatRepository {
         .snapshots()
         .asyncMap((event) async {
       List<ChatContact> contacts = [];
+
       for (var document in event.docs) {
         var chatContact = ChatContact.fromMap(document.data());
-        var userData = await firestore
-            .collection('user')
-            .doc(chatContact.contactId)
-            .get();
+
+        var userData =
+            await firestore.collection('user').doc(chatContact.contactId).get();
+
         var user = UserModel.fromMap(userData.data()!);
 
         contacts.add(
@@ -48,12 +50,12 @@ class ChatRepository {
           ),
         );
       }
+
       return contacts;
     });
   }
 
-
-
+  //No Problem
   Stream<List<Message>> getChatStream(String recieverUserId) {
     return firestore
         .collection('user')
@@ -61,21 +63,22 @@ class ChatRepository {
         .collection('chats')
         .doc(recieverUserId)
         .collection('messages')
+        .orderBy('timeSent')
         .snapshots()
-        .map((event) {
+        .map(
+      (event) {
+        List<Message> messages = [];
 
-      List<Message> messages = [];
-      for (var document in event.docs) {
-        messages.add(Message.fromMap(document.data()));
-      }
+        for (var document in event.docs) {
+          messages.add(Message.fromMap(document.data()));
+        }
 
-      return messages;
-
-    });
+        return messages;
+      },
+    );
   }
 
-
-
+  //Last Message No Problem
   void _saveDataToContactSubCollection(
     UserModel senderUserData,
     UserModel recieverUserData,
@@ -83,7 +86,6 @@ class ChatRepository {
     DateTime timeSent,
     String recieverUserId,
   ) async {
-
     //reciever userchat
     var recieverChatContact = ChatContact(
       name: senderUserData.name,
@@ -106,7 +108,7 @@ class ChatRepository {
     var senderChatContact = ChatContact(
       name: recieverUserData.name,
       profilePic: recieverUserData.profilePic,
-      contactId: recieverUserData.uid,
+      contactId: recieverUserId,
       lastMessage: text,
       timeSent: timeSent,
     );
@@ -119,18 +121,7 @@ class ChatRepository {
         .set(
           senderChatContact.toMap(),
         );
-
-    await firestore
-        .collection('user')
-        .doc(recieverUserId)
-        .collection('chats')
-        .doc(auth.currentUser!.uid)
-        .set(
-          senderChatContact.toMap(),
-        );
   }
-
-
 
   void _saveMessageToMessageSubCollecton({
     required String reviverUserId,
@@ -141,22 +132,32 @@ class ChatRepository {
     required recieverUserName,
     required MessageEnum messageType,
   }) async {
-
     final message = Message(
       senderId: auth.currentUser!.uid,
-      recieverId: reviverUserId,
+      recieverid: reviverUserId,
       text: text,
-      isSeen: false,
-      timeSent: timesent,
       type: messageType,
+      timeSent: timesent,
       messageId: messageId,
+      isSeen: false,
     );
 
     await firestore
         .collection('user')
         .doc(auth.currentUser!.uid)
         .collection('chats')
-        .doc(recieverUserName)
+        .doc(reviverUserId)
+        .collection('messages')
+        .doc(messageId)
+        .set(
+          message.toMap(),
+        );
+
+    await firestore
+        .collection('user')
+        .doc(reviverUserId)
+        .collection('chats')
+        .doc(auth.currentUser!.uid)
         .collection('messages')
         .doc(messageId)
         .set(
@@ -164,23 +165,22 @@ class ChatRepository {
         );
   }
 
-
-
-
   void sendTextMessage(
       {required BuildContext context,
       required String text,
       required String reciverUseId,
       required UserModel senderUser}) async {
     try {
-
       var timesent = DateTime.now();
+
       UserModel reciverUserData;
+
       var userDataMap =
           await firestore.collection('user').doc(reciverUseId).get();
 
       reciverUserData = UserModel.fromMap(userDataMap.data()!);
 
+      /*No Problem Last MessageLast Message*/
       _saveDataToContactSubCollection(
         senderUser,
         reciverUserData,
@@ -191,6 +191,7 @@ class ChatRepository {
 
       var messageId = const Uuid().v4();
 
+      //Send Message Problem
       _saveMessageToMessageSubCollecton(
         reviverUserId: reciverUseId,
         text: text,

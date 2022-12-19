@@ -29,30 +29,32 @@ class SelectContactRepository {
     return contact;
   }
 
-  void selectContact(Contact selectedContact , BuildContext context) async{
-    try{
+  void selectContact(Contact selectedContact, BuildContext context) async {
+    try {
       var userCollection = await firestore.collection("user").get();
       bool isFound = false;
 
-      for(var document in userCollection.docs){
+      for (var document in userCollection.docs) {
         var userData = UserModel.fromMap(document.data());
-        String SelectedcontactNum = selectedContact.phones[0].number.replaceAll(" ", "");
-        
+        String SelectedcontactNum =
+            selectedContact.phones[0].number.replaceAll(" ", "");
+
         if (SelectedcontactNum == userData.phoneNumber) {
           isFound = true;
-          Navigator.pushNamed(context, MobileChatScreen.routeName , arguments: {
-            'name': userData.name,
-            'uid': userData.uid
-          });
-        }  
+          Navigator.pushNamed(
+            context,
+            MobileChatScreen.routeName,
+            arguments: {'name': userData.name, 'uid': userData.uid},
+          );
+        }
       }
       if (isFound == false) {
-        showSnackBar(context: context, content: "This number does not exist in this app");
-      }  
-
-    }catch(e){
+        showSnackBar(
+            context: context,
+            content: "This number does not exist in this app");
+      }
+    } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }
   }
-
 }
