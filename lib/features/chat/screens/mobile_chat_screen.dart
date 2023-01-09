@@ -5,7 +5,6 @@ import 'package:whatsapp_ui/common/utils/loader.dart';
 import 'package:whatsapp_ui/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_ui/features/chat/widgets/bottom_chat_field.dart';
 import 'package:whatsapp_ui/model/user_model.dart';
-
 import 'package:whatsapp_ui/widgets/chat_list.dart';
 
 class MobileChatScreen extends ConsumerWidget {
@@ -67,12 +66,7 @@ class MobileChatScreen extends ConsumerWidget {
               recieverUserId: uid,
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(
-                right: size.width * 0.04, left: size.width * 0.04),
-            child: BottomChatField(uid),
-          ),
-          SizedBox(height: size.height / 60)
+          BottomChatField(uid),
         ],
       ),
     );

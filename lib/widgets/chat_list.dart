@@ -6,8 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:whatsapp_ui/common/utils/loader.dart';
 import 'package:whatsapp_ui/features/chat/controller/chat_controller.dart';
 import 'package:whatsapp_ui/model/message.dart';
-import 'package:whatsapp_ui/widgets/my_message_card.dart';
-import 'package:whatsapp_ui/widgets/sender_message_card.dart';
+import 'package:whatsapp_ui/features/chat/widgets/my_message_card.dart';
+import 'package:whatsapp_ui/features/chat/widgets/sender_message_card.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   final String recieverUserId;
@@ -48,11 +48,13 @@ class _ChatListState extends ConsumerState<ChatList> {
             if (messageData.senderId ==
                 FirebaseAuth.instance.currentUser!.uid) {
               return MyMessageCard(
+                messageEnum: messageData.type,
                 message: messageData.text,
                 date: DateFormat.Hm().format(messageData.timeSent),
               );
             }
             return SenderMessageCard(
+              messageEnum: messageData.type,
               message: messageData.text,
               date: DateFormat.Hm().format(messageData.timeSent),
             );
