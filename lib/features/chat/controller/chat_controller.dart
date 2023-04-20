@@ -43,7 +43,7 @@ class ChatController {
         );
   }
 
-  void sendGIFMessage(
+/*  void sendGIFMessage(
     BuildContext context,
     String GifUrl,
     String reciverUseId,
@@ -56,7 +56,7 @@ class ChatController {
             senderUser: value!,
           ),
         );
-  }
+  }*/
 
   void sendFileMessage(
     BuildContext context,

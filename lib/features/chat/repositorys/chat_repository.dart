@@ -269,6 +269,7 @@ class ChatRepository {
     }
   }
 
+/*
   void sendGIFMessage(
       {required BuildContext context,
         required String GifUrl,
@@ -284,7 +285,9 @@ class ChatRepository {
 
       reciverUserData = UserModel.fromMap(userDataMap.data()!);
 
-      /*No Problem Last MessageLast Message*/
+      */
+/*No Problem Last MessageLast Message*//*
+
       _saveDataToContactSubCollection(
         senderUser,
         reciverUserData,
@@ -310,6 +313,7 @@ class ChatRepository {
     }
   }
 
+*/
 
 
 }

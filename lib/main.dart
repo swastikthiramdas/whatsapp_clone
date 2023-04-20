@@ -48,7 +48,8 @@ class MyApp extends ConsumerWidget {
               );
             },
             loading: () => const LoaderScreen(),
-          ),
+          )
+      ,
     );
   }
 }
